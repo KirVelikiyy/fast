@@ -31,3 +31,12 @@ async def get_fruit(fruit: Fruits):
             return {"message": f"{default_message} {Fruits.banana.value}"}
         case Fruits.strawberry:
             return {"message": f"{default_message} {Fruits.strawberry.value}"}
+
+
+fake_items_db = [{"item_name": "Foo"}, {"item_name": "Bar"}, {"item_name": "Baz"}]
+
+
+@app.get("/items/{item_id}")
+async def get_item_data(item_id: str, skip: int = 0, limit: int = 10):
+    data = fake_items_db[skip: skip + limit]
+    return {"item_id": item_id, "data": data}
