@@ -1,42 +1,29 @@
 from enum import Enum
+from datetime import datetime
 
 from fastapi import FastAPI
+from pydantic import BaseModel
+
+
+class Language(Enum):
+    russian = 'russian'
+    english = 'english'
+    german = 'german'
+
+
+class LangCard(BaseModel):
+    description: str | None = None
+    original_lang: Language
+    translation_lang: Language
+    word: str
+    translation: str
+
 
 app = FastAPI()
 
 
-class Fruits(Enum):
-    apple = "apple"
-    banana = "banana"
-    strawberry = "strawberry"
-
-
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
-
-
-@app.get("/hello/{name}")
-async def say_hello(name: str):
-    return {"message": f"Hello {name}"}
-
-
-@app.get("/fruits/{fruit}")
-async def get_fruit(fruit: Fruits):
-    default_message = "Your fruit is"
-    match fruit:
-        case Fruits.apple:
-            return {"message": f"{default_message} {Fruits.apple.value}"}
-        case Fruits.banana:
-            return {"message": f"{default_message} {Fruits.banana.value}"}
-        case Fruits.strawberry:
-            return {"message": f"{default_message} {Fruits.strawberry.value}"}
-
-
-fake_items_db = [{"item_name": "Foo"}, {"item_name": "Bar"}, {"item_name": "Baz"}]
-
-
-@app.get("/items/{item_id}")
-async def get_item_data(item_id: str, skip: int = 0, limit: int = 10):
-    data = fake_items_db[skip: skip + limit]
-    return {"item_id": item_id, "data": data}
+@app.post("/language-cards/")
+async def create_lang_card(lang_card: LangCard):
+    card_dict = lang_card.dict()
+    card_dict.update({"datetime": datetime.now()})
+    return card_dict

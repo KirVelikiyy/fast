@@ -1,11 +1,12 @@
 # Test your FastAPI endpoints
 
-GET http://127.0.0.1:8000/
-Accept: application/json
+POST http://127.0.0.1:8000/language-cards/
+Content-Type: application/json
 
-###
-
-GET http://127.0.0.1:8000/hello/User
-Accept: application/json
-
-###
+{
+  "description": null,
+  "original_lang": "russian",
+  "translation_lang": "english",
+  "word": "яблоко",
+  "translation": "apple"
+}
