@@ -24,6 +24,6 @@ app = FastAPI()
 
 @app.post("/language-cards/")
 async def create_lang_card(lang_card: LangCard):
-    card_dict = lang_card.dict()
+    card_dict = lang_card.model_dump()
     card_dict.update({"datetime": datetime.now()})
     return card_dict
